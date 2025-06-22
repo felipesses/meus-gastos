@@ -119,47 +119,52 @@ export async function GET() {
 
     const globalPredefinedCategories = [
       {
-        id: 5,
-        name: "Alimentação",
-        isCustom: false,
-        userId: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 6,
-        name: "Transporte",
-        isCustom: false,
-        userId: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 7,
-        name: "Moradia",
-        isCustom: false,
-        userId: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 8,
-        name: "Lazer",
-        isCustom: false,
-        userId: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 9,
+        id: 1,
         name: "Salário",
         isCustom: false,
         userId: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+
       {
-        id: 10,
+        id: 2,
+        name: "Renda Extra",
+        isCustom: false,
+        userId: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      {
+        id: 3,
+        name: "Cartões",
+        isCustom: false,
+        userId: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      {
+        id: 4,
+        name: "Moradia",
+        isCustom: false,
+        userId: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      {
+        id: 5,
+        name: "Lazer",
+        isCustom: false,
+        userId: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
+      {
+        id: 6,
         name: "Investimento",
         isCustom: false,
         userId: null,
@@ -167,7 +172,7 @@ export async function GET() {
         updatedAt: new Date(),
       },
       {
-        id: 11,
+        id: 7,
         name: "Saúde",
         isCustom: false,
         userId: null,
@@ -175,7 +180,7 @@ export async function GET() {
         updatedAt: new Date(),
       },
       {
-        id: 12,
+        id: 8,
         name: "Educação",
         isCustom: false,
         userId: null,
