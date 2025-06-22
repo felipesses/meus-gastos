@@ -1,0 +1,48 @@
+{
+  "name": "my-expenses",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "buildstart": "next build && next start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@clerk/localizations": "^3.16.5",
+    "@clerk/nextjs": "^6.22.0",
+    "@hookform/resolvers": "^5.1.1",
+    "@neondatabase/serverless": "^1.0.1",
+    "date-fns": "^4.1.0",
+    "drizzle-orm": "^0.44.2",
+    "lucide-react": "^0.518.0",
+    "next": "15.3.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.58.1",
+    "recharts": "^2.15.3",
+    "svix": "^1.67.0",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.19.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "drizzle-kit": "^0.31.1",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.4",
+    "jest": "^30.0.2",
+    "jest-environment-jsdom": "^30.0.2",
+    "tailwindcss": "^4",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5"
+  }
+}

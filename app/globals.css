@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+html, body {
+  font-family: 'Inter', sans-serif;
+   @apply antialiased bg-gray-50 text-gray-800; 
+}
+    
