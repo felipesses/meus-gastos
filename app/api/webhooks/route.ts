@@ -2,7 +2,7 @@ import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import { Webhook } from "svix";
 import { db } from "@/lib/db"; // Importa seu cliente Drizzle ORM
-import { users } from "@/lib/schema"; // Importa a tabela de usuários do seu esquema Drizzle
+import { categories, users } from "@/lib/schema"; // Importa a tabela de usuários do seu esquema Drizzle
 import { eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
@@ -50,6 +50,17 @@ export async function POST(req: Request) {
       const email = email_addresses[0]?.email_address;
       const fullName = [first_name, last_name].filter(Boolean).join(" ");
 
+      const globalPredefinedCategories = [
+        { name: "Salário" },
+        { name: "Renda Extra" },
+        { name: "Cartões" },
+        { name: "Moradia" },
+        { name: "Lazer" },
+        { name: "Investimento" },
+        { name: "Saúde" },
+        { name: "Educação" },
+      ];
+
       if (!email) {
         console.warn(
           `User ${id} created without email address. Ignoring DB Creation.`
@@ -64,6 +75,17 @@ export async function POST(req: Request) {
         createdAt: new Date(),
         updatedAt: new Date(),
       });
+
+      await db.insert(categories).values(
+        globalPredefinedCategories.map((cat) => ({
+          name: cat.name,
+          isCustom: false,
+          userId: id,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }))
+      );
+
       console.log(`User ${id} created in DB.`);
     } else if (eventType === "user.updated") {
       const { id, email_addresses, first_name, last_name } = evt.data;
@@ -87,6 +109,7 @@ export async function POST(req: Request) {
             createdAt: new Date(),
             updatedAt: new Date(),
           });
+
           console.log(`User ${id} created after update event.`);
         } else {
           console.warn(`There is not email data for user ${id}.`);

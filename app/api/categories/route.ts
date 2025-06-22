@@ -110,93 +110,13 @@ export async function GET() {
       });
     }
 
-    // Fetch user's custom categories and global predefined categories
     const userCategories = await db
       .select()
       .from(categories)
       .where(eq(categories.userId, userInDb.clerkUserId))
       .orderBy(asc(categories.name));
 
-    const globalPredefinedCategories = [
-      {
-        id: 1,
-        name: "Salário",
-        isCustom: false,
-        userId: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-
-      {
-        id: 2,
-        name: "Renda Extra",
-        isCustom: false,
-        userId: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-
-      {
-        id: 3,
-        name: "Cartões",
-        isCustom: false,
-        userId: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-
-      {
-        id: 4,
-        name: "Moradia",
-        isCustom: false,
-        userId: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-
-      {
-        id: 5,
-        name: "Lazer",
-        isCustom: false,
-        userId: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-
-      {
-        id: 6,
-        name: "Investimento",
-        isCustom: false,
-        userId: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 7,
-        name: "Saúde",
-        isCustom: false,
-        userId: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: 8,
-        name: "Educação",
-        isCustom: false,
-        userId: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ];
-
-    // Combine user's custom categories with global ones
-    // Filter out any custom categories that might have the same name as a global one if strict uniqueness is desired
-    const combinedCategories = [
-      ...userCategories,
-      ...globalPredefinedCategories,
-    ];
-
-    return NextResponse.json(combinedCategories, { status: 200 });
+    return NextResponse.json(userCategories, { status: 200 });
   } catch (error) {
     console.error("Error fetching categories:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
