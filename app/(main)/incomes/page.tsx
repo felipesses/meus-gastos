@@ -9,6 +9,8 @@ import { EditIcon, Loader2, Trash2Icon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMessage } from "@/context/MessageContext";
+import { monthOptions } from "@/utils/dashboard";
+import { endOfMonth, format, startOfMonth } from "date-fns";
 
 export default function IncomesPage() {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -16,11 +18,59 @@ export default function IncomesPage() {
   const [incomes, setIncomes] = useState<Income[]>([]);
   const [loading, setLoading] = useState(true);
   const [, setError] = useState<string | null>(null);
+
+  const [selectedMonth, setSelectedMonth] = useState<string>(() => {
+    try {
+      const storedMonth = localStorage.getItem("lastSelectedDashboardMonth");
+      if (
+        storedMonth &&
+        monthOptions.some((option) => option.value === storedMonth)
+      ) {
+        return storedMonth;
+      }
+    } catch (e) {
+      console.error(
+        "Failed to load selected month from localStorage during initialization:",
+        e
+      );
+    }
+    return monthOptions[11].value;
+  });
+
   const router = useRouter();
 
   const { showAlert, showConfirm } = useMessage();
 
+  useEffect(() => {
+    try {
+      const storedMonth = localStorage.getItem("lastSelectedDashboardMonth");
+      if (
+        storedMonth &&
+        monthOptions.some((option) => option.value === storedMonth)
+      ) {
+        setSelectedMonth(storedMonth);
+      }
+    } catch (e) {
+      console.error("Failed to load selected month from localStorage:", e);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("lastSelectedDashboardMonth", selectedMonth);
+    } catch (e) {
+      console.error("Failed to save selected month to localStorage:", e);
+    }
+  }, [selectedMonth]);
+
   const fetchIncomes = useCallback(async () => {
+    const [yearStr, monthStr] = selectedMonth.split("-");
+    const year = parseInt(yearStr);
+    const month = parseInt(monthStr) - 1;
+
+    const startDate = format(startOfMonth(new Date(year, month)), "yyyy-MM-dd");
+    const endDate = format(endOfMonth(new Date(year, month)), "yyyy-MM-dd");
+
     if (!isLoaded || !isSignedIn || !user?.id) {
       setLoading(false);
       return;
@@ -29,12 +79,15 @@ export default function IncomesPage() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/transactions?type=income`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `/api/transactions?type=income&startDate=${startDate}&endDate=${endDate}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -49,11 +102,15 @@ export default function IncomesPage() {
     } finally {
       setLoading(false);
     }
-  }, [isLoaded, isSignedIn, user?.id]);
+  }, [isLoaded, isSignedIn, user?.id, selectedMonth]);
 
   useEffect(() => {
     fetchIncomes();
   }, [fetchIncomes]);
+
+  const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMonth(event.target.value);
+  };
 
   const handleDelete = async (id: string) => {
     showConfirm(
@@ -118,6 +175,24 @@ export default function IncomesPage() {
       <h1 className="text-3xl font-bold mb-6 text-gray-900 text-center">
         Minhas Rendas
       </h1>
+
+      <div className="mb-8 flex justify-center">
+        <label htmlFor="month-select" className="sr-only">
+          Selecione o mês
+        </label>
+        <select
+          id="month-select"
+          value={selectedMonth}
+          onChange={handleMonthChange}
+          className="px-4 py-2 border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800 text-lg"
+        >
+          {monthOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
       {incomes.length === 0 ? (
         <div className="bg-white p-6 rounded-xl shadow-md text-center">
           <p className="text-gray-600 mb-4">Sem rendas registradas.</p>
@@ -217,9 +292,6 @@ export default function IncomesPage() {
                 ))}
               </tbody>
             </table>
-            <div className="mt-4 text-center text-gray-500">
-              Example pagination
-            </div>
           </div>
         </>
       )}
