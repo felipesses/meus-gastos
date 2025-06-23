@@ -52,7 +52,7 @@ export default function DashboardPage() {
         e
       );
     }
-    return monthOptions[0].value;
+    return monthOptions[11].value;
   });
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);

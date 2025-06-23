@@ -12,8 +12,8 @@ const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 const generateMonthOptions = () => {
   const options = [];
   const today = new Date();
-  for (let i = 0; i < 12; i++) {
-    const date = subMonths(today, i);
+  for (let i = -11; i <= 12; i++) {
+    const date = subMonths(today, -i);
     const value = format(date, "yyyy-MM");
     let label = format(date, "MMMM yyyy", { locale: ptBR });
 
@@ -23,5 +23,4 @@ const generateMonthOptions = () => {
   }
   return options;
 };
-
 export const monthOptions = generateMonthOptions();
