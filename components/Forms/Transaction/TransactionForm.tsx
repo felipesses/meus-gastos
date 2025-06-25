@@ -96,7 +96,7 @@ export default function TransactionForm({
   } = useForm<TransactionFormValues>({
     resolver: zodResolver(transactionFormSchema),
     defaultValues: {
-      amount: 0,
+      amount: undefined,
       description: "",
       date: getTodayDateString(),
       type: "income",
@@ -124,7 +124,7 @@ export default function TransactionForm({
       });
     } else {
       reset({
-        amount: 0,
+        amount: undefined,
         description: "",
         date: getTodayDateString(),
         type: "income",

@@ -300,12 +300,6 @@ export default function ExpensesPage() {
                 ))}
               </tbody>
             </table>
-
-            {/* TODO: Implement pagination here */}
-            <div className="mt-4 text-center text-gray-500">
-              {/* Pagination will go here */}
-              Exemplo pagination
-            </div>
           </div>
         </>
       )}
