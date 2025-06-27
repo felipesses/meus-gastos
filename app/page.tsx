@@ -42,7 +42,16 @@ export default function Home() {
           <SignedIn>
             <div className="flex flex-col items-center space-y-4">
               <p className="text-lg mb-2">Você já está logado(a)!</p>
-              <UserButton />
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: {
+                      width: "4rem",
+                      height: "4rem",
+                    },
+                  },
+                }}
+              />
               <Link href="/dashboard" passHref>
                 <button className="mt-4 bg-green-600 text-white py-3 px-6 rounded-xl hover:bg-green-700 transition-colors duration-300 text-lg font-semibold shadow-md">
                   Ir para o Dashboard
