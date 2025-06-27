@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useMessage } from "@/context/MessageContext";
 import { monthOptions } from "@/utils/dashboard";
 import { endOfMonth, format, startOfMonth } from "date-fns";
+import { getTodayDay } from "@/utils/getTodayDay";
 
 export default function IncomesPage() {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -170,6 +171,8 @@ export default function IncomesPage() {
     );
   }
 
+  const day = getTodayDay();
+
   return (
     <div className="w-full">
       <h1 className="text-3xl font-bold mb-6 text-gray-900 text-center">
@@ -193,10 +196,25 @@ export default function IncomesPage() {
           ))}
         </select>
       </div>
+
+      {incomes.length > 0 && (
+        <div className="my-8 flex justify-center items-center">
+          <Link
+            href={`/transactions?month=${selectedMonth}-${day}&transactionType=income`}
+            passHref
+          >
+            <Button variant="primary">Registrar nova renda</Button>
+          </Link>
+        </div>
+      )}
+
       {incomes.length === 0 ? (
         <div className="bg-white p-6 rounded-xl shadow-md text-center">
           <p className="text-gray-600 mb-4">Sem rendas registradas.</p>
-          <Link href="/transactions" passHref>
+          <Link
+            href={`/transactions?month=${selectedMonth}-${day}&transactionType=income`}
+            passHref
+          >
             <Button variant="primary">Registrar nova renda</Button>
           </Link>
         </div>

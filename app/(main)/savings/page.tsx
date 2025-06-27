@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import { Saving, SavingCard } from "@/components/SavingCard";
 import { useMessage } from "@/context/MessageContext";
 import { monthOptions } from "@/utils/dashboard";
+import { getTodayDay } from "@/utils/getTodayDay";
 import { toLocalDateInputValue } from "@/utils/localeDateInput";
 import { useUser } from "@clerk/nextjs";
 import { endOfMonth, format, startOfMonth } from "date-fns";
@@ -168,6 +169,8 @@ export default function SavingsPage() {
     );
   }
 
+  const day = getTodayDay();
+
   return (
     <div className="w-full">
       <h1 className="text-3xl font-bold mb-6 text-gray-900 text-center">
@@ -192,10 +195,24 @@ export default function SavingsPage() {
         </select>
       </div>
 
+      {savings.length > 0 && (
+        <div className="my-8 flex justify-center items-center">
+          <Link
+            href={`/transactions?month=${selectedMonth}-${day}&transactionType=saving`}
+            passHref
+          >
+            <Button variant="primary">Registrar nova economia</Button>
+          </Link>
+        </div>
+      )}
+
       {savings.length === 0 ? (
         <div className="bg-white p-6 rounded-xl shadow-md text-center">
           <p className="text-gray-600 mb-4">Sem economias registradas. </p>
-          <Link href="/transactions" passHref>
+          <Link
+            href={`/transactions?month=${selectedMonth}-${day}&transactionType=saving`}
+            passHref
+          >
             <Button variant="primary">Registrar nova economia</Button>
           </Link>
         </div>

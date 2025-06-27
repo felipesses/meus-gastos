@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/Input";
 import Button from "@/components/Button";
 import { transactionTypeEnum } from "@/lib/schema";
@@ -67,6 +67,7 @@ interface ExistingTransaction {
 
 interface TransactionFormProps {
   existingTransaction?: ExistingTransaction;
+  month?: string;
 }
 
 interface Category {
@@ -82,6 +83,14 @@ export default function TransactionForm({
   const router = useRouter();
 
   const { showAlert } = useMessage();
+
+  const params = useSearchParams();
+
+  const month = params.get("month");
+  const transactionType = params.get("transactionType") as
+    | "income"
+    | "expense"
+    | "saving";
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
@@ -99,14 +108,14 @@ export default function TransactionForm({
       amount: undefined,
       description: "",
       date: getTodayDateString(),
-      type: "income",
+      type: transactionType || "income",
       categoryId: "",
       ...(existingTransaction && {
         id: existingTransaction.id,
         amount: existingTransaction.amount,
         description: existingTransaction.description,
-        date: existingTransaction.date,
-        type: existingTransaction.type,
+        date: month || existingTransaction.date,
+        type: transactionType || existingTransaction.type,
         categoryId: existingTransaction.categoryId || "",
       }),
     },
@@ -126,12 +135,12 @@ export default function TransactionForm({
       reset({
         amount: undefined,
         description: "",
-        date: getTodayDateString(),
-        type: "income",
+        date: month || getTodayDateString(),
+        type: transactionType || "income",
         categoryId: "",
       });
     }
-  }, [existingTransaction, reset]);
+  }, [existingTransaction, month, reset, transactionType]);
 
   const fetchCategories = useCallback(async () => {
     if (!isClerkLoaded || !isSignedIn || !clerkUserId) {

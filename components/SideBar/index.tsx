@@ -42,9 +42,22 @@ export const SideBar = ({
         </div>
 
         <div className="mb-8 flex flex-col items-center md:hidden">
-          <UserButton />
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: {
+                  width: "4rem",
+                  height: "4rem",
+                },
+              },
+            }}
+          />
 
-          {user && <p className="mt-2 text-lg font-medium text-gray-50">Olá</p>}
+          {user && (
+            <p className="mt-2 text-lg font-medium text-gray-50">
+              {user.fullName}
+            </p>
+          )}
         </div>
 
         <ul>

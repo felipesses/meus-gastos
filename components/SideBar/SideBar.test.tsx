@@ -6,7 +6,7 @@ import { render, screen, fireEvent } from "@/utils/test-utils";
 
 jest.mock("@clerk/nextjs", () => ({
   UserButton: () => <div data-testid="user-button" />,
-  useUser: () => ({ user: { id: "123" } }),
+  useUser: () => ({ user: { id: "123", fullName: "John Doe" } }),
 }));
 
 // Mock lucide-react XIcon
@@ -43,7 +43,7 @@ describe("SideBar", () => {
 
   it("renders greeting when user exists", () => {
     render(<SideBar isOpen={true} onClose={onClose} />);
-    expect(screen.getByText("Olá")).toBeInTheDocument();
+    expect(screen.getByText("John Doe")).toBeInTheDocument();
   });
 
   it("renders all nav items", () => {

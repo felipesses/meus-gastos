@@ -35,7 +35,16 @@ export const NavBar = () => {
         </ul>
       </div>
 
-      <UserButton />
+      <UserButton
+        appearance={{
+          elements: {
+            avatarBox: {
+              width: "3rem",
+              height: "3rem",
+            },
+          },
+        }}
+      />
     </nav>
   );
 };
